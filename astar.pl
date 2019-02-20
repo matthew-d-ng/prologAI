@@ -40,13 +40,11 @@ initKB( File ) :-
 
 astar( Node, Path, Cost ) :- 
     kb( KB ),
-    astar( Node, Path, Cost, KB ).
+    astar( [[Node, [Node], 0]], Path, Cost, KB ).
 
-% astar(Node, Path, Cost, KB) :- ???
-
-arc( [H | T], Node, Cost, KB ) :-
+arc( [H | T], Dest, Cost, KB ) :-
     member( [H | B], KB ),
-    append( B, T, Node ),
+    append( B, T, Dest ),
     length( B, L ),
     Cost is L+1.
 
@@ -58,7 +56,17 @@ goal( [] ).
 less-than( [[Node1 | _], Cost1], [[Node2 | _], Cost2] ) :-
     heuristic( Node1, Hvalue1 ),
     heuristic( Node2, Hvalue2 ),
-    F1 is Cost1 + Hvalue1, 
+    F1 is Cost1 + Hvalue1,
     F2 is Cost2 + Hvalue2,
     F1 =< F2.
+
+astar( [[Node, Path, Cost] | _], Path, Cost, _ ) :- 
+    goal( Node ).
+
+astar( [[Node, Path, Cost] | Rest], Path, Cost, KB ) :-
+    findall( X, arc( Node, X ), Children ),
+    add-to-frontier( New ),
+    astar( New ).
+
+add-to-frontier(  ).
 
