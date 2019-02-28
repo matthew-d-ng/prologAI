@@ -38,6 +38,9 @@ initKB( File ) :-
     retractall( kb(_) ), 
     makeKB( File ).
 
+%___________________________________________________________________
+%___________________________________________________________________
+
 astar( Node, Path, Cost ) :- 
     kb( KB ),
     astar( [[Node, [Node], 0]], Path, Cost, KB ).
@@ -65,8 +68,10 @@ astar( [[Node, Path, Cost] | _], Path, Cost, _ ) :-
 
 astar( [[Node, Path, Cost] | Rest], Path, Cost, KB ) :-
     findall( X, arc( Node, X ), Children ),
-    add-to-frontier( New ),
-    astar( New ).
+    add-to-frontier( Children, [Node, Path, Cost] | Rest], NewFrontier ),
+    astar( NewFrontier, [Node | Path], Cost, KB).
 
-add-to-frontier(  ).
+add-to-frontier( [C | RestChild], [HeadFront | RestOldFrontier], NewFrontier ) :-
+    less-than(  )
+    add-to-frontier(  ).
 
