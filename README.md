@@ -1,2 +1,2 @@
 # prologAI
-AI assignments in prolog
+Implementation of A* algorithm in Prolog
